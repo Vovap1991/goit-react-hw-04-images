@@ -33,25 +33,25 @@
 //   };
 
 //   async componentDidUpdate(prevProps, prevState) {
-//     const prevQuery = prevState.query;
-//     const newQuery = this.state.query;
+// const prevQuery = prevState.query;
+// const newQuery = this.state.query;
 
-//     if (prevQuery !== newQuery || prevState.page !== this.state.page) {
-//       const normalizedQuery = newQuery.slice(newQuery.indexOf('/') + 1);
+// if (prevQuery !== newQuery || prevState.page !== this.state.page) {
+//   const normalizedQuery = newQuery.slice(newQuery.indexOf('/') + 1);
 
-//       this.setState({ loading: true });
+//   this.setState({ loading: true });
 
-//       try {
-//         const images = await fetchImages(normalizedQuery, this.state.page);
+//   try {
+//     const images = await fetchImages(normalizedQuery, this.state.page);
 
-//         if (images.hits.length === 0) {
-//           Notify.failure(
-//             'No images have been found according to your request. Please, try again!'
-//           );
-//           this.setState({
-//             loading: false,
-//           });
-//         }
+// if (images.hits.length === 0) {
+//   Notify.failure(
+//     'No images have been found according to your request. Please, try again!'
+//   );
+//   this.setState({
+//     loading: false,
+//   });
+//         // }
 //         this.setState(prevState => ({
 //           images: [...prevState.images, ...images.hits],
 //           loading: false,

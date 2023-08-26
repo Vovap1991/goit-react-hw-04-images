@@ -8,14 +8,13 @@ import { fetchImages } from '../../api';
 import { Loader } from '../Loader/Loader';
 
 import { MainContainer } from './App.styled';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const App = () => {
   const [query, setQuery] = useState('');
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [noResults, setNoResults] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
 
   const changeQuery = newQuery => {
@@ -26,6 +25,32 @@ export const App = () => {
     setImages([]);
     setPage(1);
   };
+
+  useEffect(() => {
+    if (query === '') {
+      return;
+    }
+
+    async function getImages() {
+      const normalizedQuery = query.slice(query.indexOf('/') + 1);
+      try {
+        setLoading(true);
+        const receivedImages = await fetchImages(normalizedQuery, page);
+
+        if (receivedImages.hits.length === 0) {
+          Notify.failure(
+            'No images have been found according to your request. Please, try again!'
+          );
+          setLoading(false);
+        }
+
+        setImages(prevState => [...prevState, ...receivedImages.hits]);
+        setLoading(false);
+        setTotalPages(Math.ceil(images.totalHits / 12));
+      } catch (error) {}
+    }
+    getImages();
+  }, [query, page]);
 
   const handleLoadMore = () => {
     setPage(prevState => prevState + 1);
