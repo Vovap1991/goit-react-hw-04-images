@@ -1,4 +1,3 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import toast, { Toaster } from 'react-hot-toast';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
@@ -50,7 +49,7 @@ export const App = () => {
       }
     }
     getImages();
-  }, [query, page]);
+  }, [query, page, images.totalHits]);
 
   const handleLoadMore = () => {
     setPage(prevState => prevState + 1);
