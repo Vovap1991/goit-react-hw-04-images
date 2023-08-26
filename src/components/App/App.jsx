@@ -1,12 +1,10 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
+import toast, { Toaster } from 'react-hot-toast';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { Button } from '../Button/Button';
-
 import { fetchImages } from '../../api';
 import { Loader } from '../Loader/Loader';
-
 import { MainContainer } from './App.styled';
 import { useState, useEffect } from 'react';
 
@@ -19,7 +17,7 @@ export const App = () => {
 
   const changeQuery = newQuery => {
     if (newQuery === query) {
-      return Notify.failure('Please, enter search params');
+      return toast.error('Please, enter search params');
     }
     setQuery(`${Date.now()}/${newQuery}`);
     setImages([]);
@@ -38,7 +36,7 @@ export const App = () => {
         const receivedImages = await fetchImages(normalizedQuery, page);
 
         if (receivedImages.hits.length === 0) {
-          Notify.failure(
+          toast.error(
             'No images have been found according to your request. Please, try again!'
           );
           setLoading(false);
@@ -47,7 +45,9 @@ export const App = () => {
         setImages(prevState => [...prevState, ...receivedImages.hits]);
         setLoading(false);
         setTotalPages(Math.ceil(images.totalHits / 12));
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
     getImages();
   }, [query, page]);
@@ -59,6 +59,7 @@ export const App = () => {
 
   return (
     <MainContainer>
+      <Toaster position="top-right" reverseOrder={false} />
       <div>
         <SearchBar onSubmit={changeQuery} />
       </div>
