@@ -43,7 +43,7 @@ export const App = () => {
 
         setImages(prevState => [...prevState, ...receivedImages.hits]);
         setLoading(false);
-        setTotalPages(Math.ceil(images.totalHits / 12));
+        setTotalPages(receivedImages.totalHits);
       } catch (error) {
         console.log(error);
       }
@@ -56,6 +56,8 @@ export const App = () => {
     setLoading(true);
   };
 
+  console.log(totalPages);
+
   return (
     <MainContainer>
       <Toaster position="top-right" reverseOrder={false} />
@@ -67,7 +69,7 @@ export const App = () => {
       </div>
       {loading && <Loader />}
       <div>
-        {images.length !== 0 && totalPages !== page && (
+        {images.length !== 0 && totalPages !== images.length && (
           <Button onClick={handleLoadMore} />
         )}
       </div>
